@@ -1,6 +1,8 @@
 var selectedStory;
 var selectedChoice;
 var currentStory = 0;
+var currentPage = "pageStart";
+var json = stories[currentStory].pageStart.nextPage;
 
 $(document).ready(function() {
     
@@ -11,7 +13,7 @@ $(document).ready(function() {
 
 		var newStoryIndex =  $(".bookBtn").index(this);
 		currentStory = newStoryIndex;
-		storyHTML();
+		storyHTML(currentPage);
 
     });
 });
@@ -26,7 +28,7 @@ function mainHTML() {
 		}
 	};
 
-function storyHTML() {
+function storyHTML(currentPage) {
 	var storyHTML = "<img class='center-block' src='images/ouat.gif'><h1>" + stories[currentStory].storyTitle + "</h1>";
     $(".main-area").html(storyHTML); 
     var storyImg = $("<img>");
@@ -34,84 +36,45 @@ function storyHTML() {
     storyImg.attr("src", "http://via.placeholder.com/350x350");
     $(".main-area").append(storyImg);
     var storyText = $("<p>");
-    storyText.text(stories[currentStory].pageStart.text);
+    storyText.text(stories[currentStory][currentPage].text);
     $(".main-area").append(storyText);
-    for (var j = 0; j < 2; j++) {
-    	var choiceBtn = $("<button>");
-    	choiceBtn.addClass("text-center btn btn-warning btn-lg choice");
-    	choiceBtn.text(stories[currentStory].pageStart.nextpage[j]);
-    	$(".main-area").append(choiceBtn);
-    }
+        $.each(stories[currentStory][currentPage].nextPage, function(k, v) {
+            //display the key and value pair
+            var choiceBtn = $("<button>");
+            choiceBtn.addClass("text-center btn btn-warning btn-lg choice");
+            // choiceBtn.attr("id", k);
+            choiceBtn.text(v);
+            choiceBtn.on("click", function(event){
+                // selectedChoice = k;
+                // console.log(selectedChoice);
+                choiceUpdate(k);
+            })
+            $(".main-area").append(choiceBtn);
 
-    $(".choice").on("click", function(event){
-        selectedChoice = $(this).text();
-        if (selectedChoice === stories[currentStory].pageStart.nextpage[0]) {
-        	console.log(selectedChoice);
-          	choiceA();
-        } else if (selectedChoice === stories[currentStory].pageStart.nextpage[1]) {
-        	console.log(selectedChoice);
-        	choiceB();
-            
-        };
-    });
+            // $(".choice").on("click", function(event){
+            //     selectedChoice = $(this).attr("id");
+            //     // storyHTML(selectedChoice);
+            //     console.log(selectedChoice);
+            //     // if (selectedChoice === v) {
+            //     //     console.log(selectedChoice);
+            //     //     choiceA();
+            //     // } else if (selectedChoice === v) {
+            //     //     console.log(selectedChoice);
+            //     //     choiceB();
+                    
+            //     // };
+            // });
+        });        
+
+    
 };
 
-function choiceA() {
-	var choiceA = "<h1>Page 1" + stories[currentStory].storyTitle + "</h1>";
-    $(".main-area").html(choiceA); 
-    var storyImg = $("<img>");
-    storyImg.addClass("inline-block img-story");
-    storyImg.attr("src", "http://via.placeholder.com/350x350");
-    $(".main-area").append(storyImg);
-    var storyText = $("<p>");
-    storyText.text(stories[currentStory].pageOne.text);
-    $(".main-area").append(storyText);
-    for (var j = 0; j < 2; j++) {
-    	var choiceBtn = $("<button>");
-    	choiceBtn.addClass("text-center btn btn-warning btn-lg choice");
-    	choiceBtn.text(stories[currentStory].pageOne.nextpage[j]);
-    	$(".main-area").append(choiceBtn);
+function choiceUpdate(choice){
+    if (choice.indexOf("Story") > -1){
+        console.log(choice);
+    } else{
+        storyHTML(choice);
     }
+    
+}
 
-    $(".choice").on("click", function(event){
-        selectedChoice = $(this).text();
-        if (selectedChoice === stories[currentStory].pageOne.nextpage[0]) {
-        	console.log(selectedChoice);
-          	//choiceC();
-        } else if (selectedChoice === stories[currentStory].pageOne.nextpage[1]) {
-        	console.log(selectedChoice);
-        	//choiceD();
-            
-        };
-    });
-};
-
-function choiceB() {
-	var choiceB = "<h1>Page2 " + stories[currentStory].storyTitle + "</h1>";
-    $(".main-area").html(choiceB); 
-    var storyImg = $("<img>");
-    storyImg.addClass("inline-block img-story");
-    storyImg.attr("src", "http://via.placeholder.com/350x350");
-    $(".main-area").append(storyImg);
-    var storyText = $("<p>");
-    storyText.text(stories[currentStory].pageTwo.text);
-    $(".main-area").append(storyText);
-    for (var j = 0; j < 2; j++) {
-    	var choiceBtn = $("<button>");
-    	choiceBtn.addClass("text-center btn btn-warning btn-lg choice");
-    	choiceBtn.text(stories[currentStory].pageTwo.nextpage[j]);
-    	$(".main-area").append(choiceBtn);
-    }
-
-    $(".choice").on("click", function(event){
-        selectedChoice = $(this).text();
-        if (selectedChoice === stories[currentStory].pageTwo.nextpage[0]) {
-        	console.log(selectedChoice);
-          	//choiceE();
-        } else if (selectedChoice === stories[currentStory].pageTwo.nextpage[1]) {
-        	console.log(selectedChoice);
-        	//choiceF();
-            
-        };
-    });
-};
