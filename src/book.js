@@ -70,8 +70,14 @@ function storyHTML(currentPage) {
 };
 
 function choiceUpdate(choice){
+    console.log(choice);
     if (choice.indexOf("Story") > -1){
-        console.log(choice);
+        if (choice.indexOf("Another") > -1){
+            location.reload();
+        } else {
+            storyHTML("pageStart");
+            
+        }
     } else{
         storyHTML(choice);
     }
