@@ -1,5 +1,5 @@
 body {
-	font-family: 'Fredericka the Great', cursive;
+	
 }
 
 img {
@@ -9,6 +9,7 @@ img {
 }
 
 h1 {
+	font-family: 'Fredericka the Great', cursive;
 	margin-left: 50px;
 	color: purple;	
 }
