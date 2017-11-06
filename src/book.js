@@ -4,15 +4,15 @@ var currentStory = 0;
 var currentPage = "pageStart";
 
 // FIREBASE AUTHENTICATION
-// var config = {
-//         apiKey: "AIzaSyAWUtB7pvGbWyUCdRJl0cLuf2_Ln0dWI5A",
-//         authDomain: "purple-tree-5f62c.firebaseapp.com",
-//         databaseURL: "https://purple-tree-5f62c.firebaseio.com",
-//         projectId: "purple-tree-5f62c",
-//         storageBucket: "",
-//         messagingSenderId: "699925334051"
-//       };
-//       firebase.initializeApp(config);
+var config = {
+        apiKey: "AIzaSyAWUtB7pvGbWyUCdRJl0cLuf2_Ln0dWI5A",
+        authDomain: "purple-tree-5f62c.firebaseapp.com",
+        databaseURL: "https://purple-tree-5f62c.firebaseio.com",
+        projectId: "purple-tree-5f62c",
+        storageBucket: "",
+        messagingSenderId: "699925334051"
+      };
+      firebase.initializeApp(config);
 
       var provider = new firebase.auth.GithubAuthProvider();
 
@@ -82,7 +82,7 @@ function storyHTML(currentPage) {
     $(".main-area").html(storyHTML); 
     var storyImg = $("<img>");
     storyImg.addClass("inline-block img-story");
-    storyImg.attr("src", "http://via.placeholder.com/350x350");
+    storyImg.attr("src", "https://via.placeholder.com/350x350");
     $(".main-area").append(storyImg);
     var storyText = $("<p>");
     storyText.text(stories[currentStory][currentPage].text);
