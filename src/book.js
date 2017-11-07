@@ -57,6 +57,11 @@ $(document).ready(function() {
 		storyHTML(currentPage);
 
     });
+
+    $(".github").on("click", function(){
+
+        githubSignin();
+      })
 });
 
 function mainHTML() {
