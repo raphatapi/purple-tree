@@ -34,15 +34,15 @@ var config = {
            });
         }
 
-        function githubSignout(){
-           firebase.auth().signOut()
+        // function githubSignout(){
+        //    firebase.auth().signOut()
            
-           .then(function() {
-              console.log('Signout successful!')
-           }, function(error) {
-              console.log('Signout failed')
-           });
-        }
+        //    .then(function() {
+        //       console.log('Signout successful!')
+        //    }, function(error) {
+        //       console.log('Signout failed')
+        //    });
+        // }
 
 
 $(document).ready(function() {
