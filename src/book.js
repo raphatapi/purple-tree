@@ -2,8 +2,9 @@ var selectedStory;
 var selectedChoice;
 var currentStory = 0;
 var currentPage = "pageStart";
+var newSound = stories[0].pageStart.sound;
 
-// FIREBASE AUTHENTICATION
+// FIREBASE GITHUB AUTHENTICATION
 var config = {
         apiKey: "AIzaSyAWUtB7pvGbWyUCdRJl0cLuf2_Ln0dWI5A",
         authDomain: "purple-tree-5f62c.firebaseapp.com",
@@ -44,71 +45,131 @@ var config = {
            });
         }
 
-
 $(document).ready(function() {
     
 	mainHTML();
 
-    $(".bookBtn").on("click", function(event){
-		selectedStory = $(this).text();
+    $(".story").on("click", function(event){
+    selectedStory = $(this).text();
 
-		var newStoryIndex =  $(".bookBtn").index(this);
+		var newStoryIndex =  $(".story").index(this);
 		currentStory = newStoryIndex;
-		storyHTML(currentPage);
+    var waitDiv = $("<div>");
+    waitDiv.attr("id", "wait-div");
+    var wait = $("<img>");
+    wait.attr("src", "images/giphy.gif");
+    waitDiv.append(wait);
+    $(".main-area").html(waitDiv);
+      setTimeout(function(){
+      storyHTML(currentPage);
+      }, 1000);
+		
 
     });
 
-    $(".github").on("click", function(){
-
+    $("#github").on("click", function(){
         githubSignin();
       })
+
+    // $("#facebook").on("click", function(){
+    //     checkLoginState();
+    //   })
 });
 
 function mainHTML() {
-       	for (var i = 0; i < stories.length; i++) {
-			var books = $("<button>");
-			books.addClass("text-center btn btn-warning btn-lg bookBtn");
-			books.attr("data-index", i);
-			books.text(stories[i].storyTitle);
-			$(".main-area").append(books);
-		}
-	};
+  for (var i = 0; i < stories.length; i++) {
+		var books = $("<a>");
+		books.addClass("story-title");
+		books.attr("data-index", i);
+		books.text(stories[i].storyTitle);
+		$(".story").append(books);
+	}
+};
 
-// GIPHY API FOR IMAGES
-// function getImage() {
-//     var topic = stories[currentStory][currentPage].topic;
-//     var queryURL = "https://api.giphy.com/v1/gifs/random?q=" + topic + "&api_key=6xfaAb1rplRM55HrAsCdiL6jn7DwEZLy&limit=10"
-// }
+$(document).on("click", ".choice", function() {
+  var sound = $(this).attr("data-sound");
+  var queryURL = "https://freesound.org/apiv2/search/text/?query="+newSound+"&filter=type:mp3&sort=duration_asc&token=0dLPbWt3qJbyxXWL3lfGKUHW575Bv5ThsCxITVEW";
+          
+          var queryURL2 = "https://freesound.org/apiv2/sounds/51715/"; 
+
+              $.ajax({
+                  url: queryURL,
+                  method: "GET"
+                })
+                .done(function(response) {
+                  var results = response.data;
+                });
+
+              $.ajax({
+                  url: queryURL2,
+                  method: "GET",
+                  headers: {"Authorization": "Token JkKEUZNbmrCvQMQGlaW9OaKdash40HKv1a4Tl5Cm"}
+                  })
+                  .done(function(response) {
+                    var results = response.previews;
+                    //create audio element and assign it to a variable
+                    var storySound = document.createElement("Audio");
+                    //attribute the sound file
+                    storySound.setAttribute("src", results["preview-hq-mp3"]);
+                    storySound.load();
+                    storySound.play();
+                  });
+              
+
+});
 
 function storyHTML(currentPage) {
+  
+var newGif = stories[currentStory][currentPage].topic;
+var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + newGif + "&rating=g&api_key=NfjGwXVTVCgEGMawDPEr5a6iJRkDaNTJ&limit=1"
 
+  $.ajax({
+      url: queryURL,
+      method: "GET"
+  })
+  .done(function(response) {
+    var results = response.data;
+    var storyImage =  $("<img>");
+    storyImage.addClass("gif");
+    storyImage.attr("data-state", "still");
+    storyImage.attr("src", results[0].images.fixed_width.url);
+    storyDiv.append(storyImage);
+  });
 
-	var storyHTML = "<h1>" + stories[currentStory].storyTitle + "</h1>";
-    $(".main-area").html(storyHTML); 
-    var storyImg = $("<img>");
-    storyImg.addClass("inline-block img-story");
-    storyImg.attr("src", "https://via.placeholder.com/350x350");
-    $(".main-area").append(storyImg);
-    var storyText = $("<p>");
-    storyText.text(stories[currentStory][currentPage].text);
-    $(".main-area").append(storyText);
-        $.each(stories[currentStory][currentPage].nextPage, function(k, v) {
-            //display the key and value pair
-            var choiceBtn = $("<button>");
-            choiceBtn.addClass("text-center btn btn-warning btn-lg choice");
-            choiceBtn.text(v);
-            choiceBtn.on("click", function(event){
-                choiceUpdate(k);
-            })
-            $(".main-area").append(choiceBtn);
+var storyHTML = "<h1>" + stories[currentStory].storyTitle + "</h1>";
+  $(".main-area").html(storyHTML);
+  var storyDiv = $("<div>");
+  storyDiv.attr("id", "story-div");
+  var storyText = $("<p>");
+  storyText.addClass("text");
+  storyText.text(stories[currentStory][currentPage].text);
+  storyDiv.append(storyText);
+  $(".main-area").append(storyDiv);
+      $.each(stories[currentStory][currentPage].nextPage, function(k, v) {
+          //display the key and value pair
+          var choiceBtn = $("<button>");
+          choiceBtn.addClass("text-center btn btn-default btn-lg choice");
+          choiceBtn.text(v);
+          choiceBtn.on("click", function(event){
+            var waitDiv = $("<div>");
+            waitDiv.attr("id", "wait-div");
+            var wait = $("<img>");
+            wait.attr("src", "images/giphy.gif");
+            waitDiv.append(wait);
+            $(".main-area").html(waitDiv);
+          setTimeout(function(){
+          choiceUpdate(k);
+          }, 1000);
+              
+          })
+          $(".main-area").append(choiceBtn);
 
-        });        
+      });        
 
     
 };
 
-function choiceUpdate(choice){
-    // console.log(choice);
+function choiceUpdate(choice) {
     if (choice.indexOf("Story") > -1){
         if (choice.indexOf("Another") > -1){
             location.reload();

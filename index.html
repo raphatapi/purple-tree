@@ -1,29 +1,105 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Purple Tree</title>
-	<link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
-	<script
-  src="https://code.jquery.com/jquery-3.2.1.js"
-  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-  crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="src/style.css">
-	<script type="text/javascript" src="src/json.js"></script>
-	<script type="text/javascript" src="src/book.js"></script>
-</head>
-<body>
-	<img src="images/logo1.png">
-	<br>
-	<div style="width: 100%" class="text-center">
-		<h1>purple tree</h1>
-	</div>
-	<div class="main-area"></div>
-	<img src="images/github.png" class="github">
-	<!-- <button onclick = "githubSignout()">Github Signout</button> -->
+  <title>Choose your Adventure</title>
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Bootstrap Mobile -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google fonts -->
+<link href="https://fonts.googleapis.com/css?family=Schoolbell" rel="stylesheet">
+<!-- SVG Animation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.3.0/snap.svg-min.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+<!-- Jquery-->
+<script
+  src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<!-- External CSS Sheet -->
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<!-- External Java Sheet -->
+<script type="text/javascript" src="src/json.js"></script>
+<script type="text/javascript" src="src/book.js"></script>
+<script src="javascript/java.js"></script>
+<script type="text/javascript" src="src/facebook.js"></script>
 
+</head>
+
+
+<body>
+<!-- Top Nav -->
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <nav class="navbar navbar-default navbar-fixed-top" id="navbar" role="navigation">
+        <div class="navbar-header">
+          <a href="index.html"><img id="purpletree" src="images/purpletree.png"></a>
+          <span id="text">Login:</span>
+          <ul class="nav navbar-nav navbar-right">
+            <li><img id="github" src="images/github.png"></li>
+            <li><img id="facebook" src="images/facebook.png"></li>
+          </ul>
+          <div id="status"></div>
+          <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button>
+        </div> 
+      </nav>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <!-- main body container -->
+      <div class="container  main-area">
+        <!-- Div for animated Title -->
+        <div class="title"> 
+          <svg width="530" height="75">
+          </svg>
+        </div>
+        <!-- Story 1 Div -->
+        <button id="story1" class="story"></button>
+      <!-- Story 2 Div-->
+        <div id="story2">
+          <div>
+            <h1 id="story2title">Astro Goes to the Moon</h1>
+          </div>
+        </div>
+      <!-- Story 3 Div -->
+        <div id="story3">
+          <div>
+            <h1 id="story3title">Mystery of the Sunken Treasure</h1>
+          </div>
+        </div>
+      <!-- Stpry 4 Div -->
+        <div id="story4">
+          <div>
+            <h1 id="story4title">The Dancing Cat</h1>
+          </div>
+        </div>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <!-- Footer -->
+  <nav class="navbar navbar-default navbar-fixed-bottom" id="navbottom">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <img id="purpletree" src="images/purpletree.png">
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active" id="brand"><a href="#">Purple Tree Studios</a></li>
+        <li><a href="#">About us</a></li>
+        <li><a href="#"></a></li>
+        <li><a href="#"></a></li>
+      </ul>
+    </div>
+  </nav>
 </body>
 </html>
+
