@@ -48,12 +48,12 @@ var config = {
 $(document).ready(function() {
     
 	mainHTML();
-
+    //Story Title Click Event - setting up currentStory to the selectedStory
     $(".story").on("click", function(event){
     selectedStory = $(this).text();
-
 		var newStoryIndex =  $(".story").index(this);
 		currentStory = newStoryIndex;
+    //Wait Page
     var waitDiv = $("<div>");
     waitDiv.attr("id", "wait-div");
     var wait = $("<img>");
@@ -66,16 +66,43 @@ $(document).ready(function() {
 		
 
     });
-
+    // Github signin button
     $("#github").on("click", function(){
         githubSignin();
       })
+    // Freesound used for story titles and choices buttons
+    $(document).on("click", ".story-title, .choice", function() {
+      var sound = $(this).attr("data-sound");
+      var queryURL = "https://freesound.org/apiv2/search/text/?query="+newSound+"&filter=type:mp3&sort=duration_asc&token=0dLPbWt3qJbyxXWL3lfGKUHW575Bv5ThsCxITVEW";
+              
+              var queryURL2 = "https://freesound.org/apiv2/sounds/51715/"; 
 
-    // $("#facebook").on("click", function(){
-    //     checkLoginState();
-    //   })
+                  $.ajax({
+                      url: queryURL,
+                      method: "GET"
+                    })
+                    .done(function(response) {
+                      var results = response.data;
+                    });
+
+                  $.ajax({
+                      url: queryURL2,
+                      method: "GET",
+                      headers: {"Authorization": "Token JkKEUZNbmrCvQMQGlaW9OaKdash40HKv1a4Tl5Cm"}
+                      })
+                      .done(function(response) {
+                        var results = response.previews;
+                        //create audio element and assign it to a variable
+                        var storySound = document.createElement("Audio");
+                        //attribute the sound file
+                        storySound.setAttribute("src", results["preview-hq-mp3"]);
+                        storySound.load();
+                        storySound.play();
+                      });
+                  
+    });
 });
-
+//Dynamicaly creates links to the storyTitles
 function mainHTML() {
   for (var i = 0; i < stories.length; i++) {
 		var books = $("<a>");
@@ -86,40 +113,9 @@ function mainHTML() {
 	}
 };
 
-$(document).on("click", ".choice", function() {
-  var sound = $(this).attr("data-sound");
-  var queryURL = "https://freesound.org/apiv2/search/text/?query="+newSound+"&filter=type:mp3&sort=duration_asc&token=0dLPbWt3qJbyxXWL3lfGKUHW575Bv5ThsCxITVEW";
-          
-          var queryURL2 = "https://freesound.org/apiv2/sounds/51715/"; 
-
-              $.ajax({
-                  url: queryURL,
-                  method: "GET"
-                })
-                .done(function(response) {
-                  var results = response.data;
-                });
-
-              $.ajax({
-                  url: queryURL2,
-                  method: "GET",
-                  headers: {"Authorization": "Token JkKEUZNbmrCvQMQGlaW9OaKdash40HKv1a4Tl5Cm"}
-                  })
-                  .done(function(response) {
-                    var results = response.previews;
-                    //create audio element and assign it to a variable
-                    var storySound = document.createElement("Audio");
-                    //attribute the sound file
-                    storySound.setAttribute("src", results["preview-hq-mp3"]);
-                    storySound.load();
-                    storySound.play();
-                  });
-              
-
-});
-
+//Story Logic
 function storyHTML(currentPage) {
-  
+//Using Giphy to generate a picture for each story page based on json topics  
 var newGif = stories[currentStory][currentPage].topic;
 var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + newGif + "&rating=g&api_key=NfjGwXVTVCgEGMawDPEr5a6iJRkDaNTJ&limit=1"
 
@@ -129,11 +125,11 @@ var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + newGif + "&rating=g&a
   })
   .done(function(response) {
     var results = response.data;
-    var storyImage =  $("<img>");
+    var storyImage = $("<img>");
     storyImage.addClass("gif");
     storyImage.attr("data-state", "still");
     storyImage.attr("src", results[0].images.fixed_width.url);
-    storyDiv.append(storyImage);
+    storyText.prepend(storyImage);
   });
 
 var storyHTML = "<h1>" + stories[currentStory].storyTitle + "</h1>";
@@ -157,18 +153,15 @@ var storyHTML = "<h1>" + stories[currentStory].storyTitle + "</h1>";
             wait.attr("src", "images/giphy.gif");
             waitDiv.append(wait);
             $(".main-area").html(waitDiv);
-          setTimeout(function(){
-          choiceUpdate(k);
-          }, 1000);
+              setTimeout(function(){
+              choiceUpdate(k);
+              }, 1000);
               
           })
           $(".main-area").append(choiceBtn);
-
       });        
-
-    
 };
-
+//Update choices based on json nextPage key
 function choiceUpdate(choice) {
     if (choice.indexOf("Story") > -1){
         if (choice.indexOf("Another") > -1){
